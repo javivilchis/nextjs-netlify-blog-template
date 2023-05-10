@@ -4,6 +4,7 @@ import PostItem from "./PostItem";
 import TagLink from "./TagLink";
 import Pagination from "./Pagination";
 import { TagContent } from "../lib/tags";
+import { createClient } from "contentful";
 
 type Props = {
   posts: PostContent[];
@@ -14,6 +15,17 @@ type Props = {
   };
 };
 export default function PostList({ posts, tags, pagination }: Props) {
+
+  const client = createClient({
+    space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID,
+    accessToken: process.env.NEXT_PUBLIC_IS_PREVIEW === "true" ?
+      process.env.NEXT_PUBLIC_CONTENTFUL_PREVIEW_TOKEN :
+      process.env.NEXT_PUBLIC_CONTENTFUL_DELIVERY_TOKEN
+  })
+console.log("CLIENt: ", client)
+  // Alternatively you can use the CDN API as follows...
+  const baseUrl = process.env.NEXT_PUBLIC_IS_PREVIEW === "true" ? "preview.contentful.com" : "cdn.contentful.com"
+
   return (
     <div className={"container"}>
       <div className={"posts"}>
